@@ -1,4 +1,4 @@
-package com.example.sugihpersonalfinances.ui.login.components
+package com.example.sugihpersonalfinances.login.ui.components
 
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.widthIn

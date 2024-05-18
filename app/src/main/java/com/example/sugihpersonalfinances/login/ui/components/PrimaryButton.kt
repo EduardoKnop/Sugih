@@ -1,7 +1,6 @@
-package com.example.sugihpersonalfinances.ui.login.components
+package com.example.sugihpersonalfinances.login.ui.components
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape

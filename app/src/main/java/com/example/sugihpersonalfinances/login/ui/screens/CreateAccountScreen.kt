@@ -1,4 +1,4 @@
-package com.example.sugihpersonalfinances.ui.login.screens
+package com.example.sugihpersonalfinances.login.ui.screens
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -14,20 +14,19 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
-import com.example.sugihpersonalfinances.ui.login.components.EmailText
-import com.example.sugihpersonalfinances.ui.login.components.PrimaryButton
-import com.example.sugihpersonalfinances.ui.login.components.NicknameText
-import com.example.sugihpersonalfinances.ui.login.components.PasswordText
+import com.example.sugihpersonalfinances.login.ui.components.EmailText
+import com.example.sugihpersonalfinances.login.ui.components.NicknameText
+import com.example.sugihpersonalfinances.login.ui.components.PasswordText
+import com.example.sugihpersonalfinances.login.ui.components.PrimaryButton
 
 @Composable
 fun CreateAccountScreen() {
-    Row (
+    Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxSize()
