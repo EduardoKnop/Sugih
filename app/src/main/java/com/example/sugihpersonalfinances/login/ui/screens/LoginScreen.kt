@@ -17,6 +17,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,14 +29,48 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import com.example.sugihpersonalfinances.R
+import com.example.sugihpersonalfinances.login.states.LoginScreenUiState
 import com.example.sugihpersonalfinances.login.ui.components.EmailText
 import com.example.sugihpersonalfinances.login.ui.components.PasswordText
 import com.example.sugihpersonalfinances.login.ui.components.PrimaryButton
 import com.example.sugihpersonalfinances.login.ui.components.SecondaryButton
 import com.example.sugihpersonalfinances.login.ui.components.SignInButton
+import com.example.sugihpersonalfinances.login.viewmodels.LoginViewModel
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(
+    viewModel: LoginViewModel,
+    onContinueWithGoogleClick: () -> Unit = {},
+    onContinueWithFacebookClick: () -> Unit = {},
+    onContinueAsGuestClick: () -> Unit = {},
+    onValidLoginClick: () -> Unit = {},
+    onInvalidLoginClick: () -> Unit = {},
+    onForgotPasswordClick: () -> Unit = {}
+) {
+
+    val state by viewModel.uiState.collectAsState()
+    LoginScreen(
+        state = state,
+        onContinueWithGoogleClick = { /*TODO*/ },
+        onContinueWithFacebookClick = { /*TODO*/ },
+        onContinueAsGuestClick = { /*TODO*/ },
+        onValidLoginClick = { /*TODO*/ },
+        onInvalidLoginClick = { /*TODO*/ },
+        onForgotPasswordClick = { /*TODO*/ }
+    )
+
+}
+
+@Composable
+fun LoginScreen(
+    state: LoginScreenUiState,
+    onContinueWithGoogleClick: () -> Unit = {},
+    onContinueWithFacebookClick: () -> Unit = {},
+    onContinueAsGuestClick: () -> Unit = {},
+    onValidLoginClick: () -> Unit = {},
+    onInvalidLoginClick: () -> Unit = {},
+    onForgotPasswordClick: () -> Unit = {}
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -60,7 +96,7 @@ fun LoginScreen() {
                 SignInButton(
                     text = "Continue with Google",
                     icon = ImageVector.vectorResource(id = R.drawable.google_icon),
-                    onClick = { /*TODO*/ },
+                    onClick = onContinueWithGoogleClick,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 8.dp)
@@ -68,14 +104,14 @@ fun LoginScreen() {
                 SignInButton(
                     text = "Continue with Facebook",
                     icon = ImageVector.vectorResource(id = R.drawable.facebook_icon),
-                    onClick = { /*TODO*/ },
+                    onClick = onContinueWithFacebookClick,
                     modifier = Modifier
                         .fillMaxWidth()
                 )
                 SignInButton(
                     text = "Continue as Guest",
                     icon = Icons.Rounded.AccountCircle,
-                    onClick = { /*TODO*/ },
+                    onClick = onContinueAsGuestClick,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 8.dp, bottom = 16.dp)
@@ -87,23 +123,27 @@ fun LoginScreen() {
                     modifier = Modifier.padding(vertical = 16.dp)
                 )
                 EmailText(
-                    value = "",
-                    onValueChange = {},
+                    value = state.emailText,
+                    onValueChange = state.onEmailTextChange,
                     modifier = Modifier.fillMaxWidth()
                 )
                 PasswordText(
-                    value = "",
-                    onValueChange = {},
+                    value = state.passwordText,
+                    onValueChange = state.onPasswordTextChange,
                     modifier = Modifier.fillMaxWidth()
                 )
                 PrimaryButton(
-                    onClick = { /*TODO*/ },
+                    onClick = onValidLoginClick,
+                    enabled = state.isAnyTextEmpty()
+                            && !state.isEmailValid()
+                            && !state.isPasswordValid(),
+                    onClickWhenDisable = onInvalidLoginClick,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 16.dp)
                 )
                 SecondaryButton(
-                    onClick = { /*TODO*/ },
+                    onClick = onForgotPasswordClick,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 8.dp)
@@ -116,5 +156,5 @@ fun LoginScreen() {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 private fun LoginScreenPreview() {
-    LoginScreen()
+    LoginScreen(state = LoginScreenUiState())
 }

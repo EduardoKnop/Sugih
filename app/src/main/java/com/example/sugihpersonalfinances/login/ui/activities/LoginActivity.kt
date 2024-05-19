@@ -16,6 +16,7 @@ import com.example.sugihpersonalfinances.login.ui.screens.CreateAccountScreen
 import com.example.sugihpersonalfinances.login.ui.screens.LoginScreen
 import com.example.sugihpersonalfinances.login.ui.screens.WelcomeScreen
 import com.example.sugihpersonalfinances.login.viewmodels.CreateAccountViewModel
+import com.example.sugihpersonalfinances.login.viewmodels.LoginViewModel
 import com.example.sugihpersonalfinances.ui.theme.IndigoDye
 import com.example.sugihpersonalfinances.ui.theme.SugihPersonalFinancesTheme
 
@@ -30,6 +31,7 @@ class LoginActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = IndigoDye
                 ) {
+                    val loginViewModel: LoginViewModel by viewModels()
                     val createAccountViewModel: CreateAccountViewModel by viewModels()
 
                     NavHost(
@@ -47,14 +49,10 @@ class LoginActivity : ComponentActivity() {
                             ))
                         }
                         composable(Destination.Login.route) {
-                            LoginScreen()
+                            LoginScreen(viewModel = loginViewModel)
                         }
                         composable(Destination.CreateAccount.route) {
-                            CreateAccountScreen(
-                                viewModel = createAccountViewModel,
-                                onSuccessClick = { /*TODO*/ },
-                                onErrorClick = { /*TODO*/ }
-                            )
+                            CreateAccountScreen(viewModel = createAccountViewModel)
                         }
                     }
                 }

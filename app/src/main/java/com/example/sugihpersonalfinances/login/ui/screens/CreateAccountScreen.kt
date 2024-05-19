@@ -39,7 +39,11 @@ fun CreateAccountScreen(
 ) {
 
     val state by viewModel.uiState.collectAsState()
-    CreateAccountScreen(state = state, onSuccessClick = { /*TODO*/ }, onErrorClick = { /*TODO*/ })
+    CreateAccountScreen(
+        state = state,
+        onSuccessClick = { /*TODO*/ },
+        onErrorClick = { /*TODO */ }
+    )
 
 }
 
