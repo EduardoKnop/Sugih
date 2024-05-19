@@ -3,12 +3,15 @@ package com.example.sugihpersonalfinances.login.ui.components
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.sugihpersonalfinances.R
 import com.example.sugihpersonalfinances.ui.theme.robotoFamily
@@ -19,7 +22,8 @@ fun PasswordText(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     labelText: String = "Password",
-    placeholderText: String = "Insert your Password"
+    placeholderText: String = "Insert your Password",
+    keyboardImeAction: ImeAction = ImeAction.Done
 ) {
     OutlinedTextField(
         value = value,
@@ -44,6 +48,10 @@ fun PasswordText(
                 contentDescription = ""
             )
         },
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Password,
+            imeAction = keyboardImeAction
+        ),
         modifier = modifier.horizontalScroll(rememberScrollState())
     )
 }

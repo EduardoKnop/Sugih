@@ -3,6 +3,7 @@ package com.example.sugihpersonalfinances.login.ui.activities
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.getValue
@@ -16,6 +17,7 @@ import com.example.sugihpersonalfinances.login.states.WelcomeScreenUiState
 import com.example.sugihpersonalfinances.login.ui.screens.CreateAccountScreen
 import com.example.sugihpersonalfinances.login.ui.screens.LoginScreen
 import com.example.sugihpersonalfinances.login.ui.screens.WelcomeScreen
+import com.example.sugihpersonalfinances.login.viewmodels.CreateAccountViewModel
 import com.example.sugihpersonalfinances.ui.theme.IndigoDye
 import com.example.sugihpersonalfinances.ui.theme.SugihPersonalFinancesTheme
 
@@ -30,6 +32,8 @@ class LoginActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = IndigoDye
                 ) {
+                    val createAccountViewModel: CreateAccountViewModel by viewModels()
+
                     NavHost(
                         navController = navController,
                         startDestination = Destination.Welcome.route
@@ -48,7 +52,10 @@ class LoginActivity : ComponentActivity() {
                             LoginScreen()
                         }
                         composable(Destination.CreateAccount.route) {
-                            CreateAccountScreen()
+                            CreateAccountScreen(
+                                viewModel = createAccountViewModel,
+                                onCreateAccountClick = { /*TODO*/ }
+                            )
                         }
                     }
                 }

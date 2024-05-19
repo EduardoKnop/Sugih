@@ -7,30 +7,52 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
+import com.example.sugihpersonalfinances.login.states.CreateAccountScreenUiState
 import com.example.sugihpersonalfinances.login.ui.components.EmailText
 import com.example.sugihpersonalfinances.login.ui.components.NicknameText
 import com.example.sugihpersonalfinances.login.ui.components.PasswordText
 import com.example.sugihpersonalfinances.login.ui.components.PrimaryButton
+import com.example.sugihpersonalfinances.login.viewmodels.CreateAccountViewModel
 
 @Composable
-fun CreateAccountScreen() {
+fun CreateAccountScreen(
+    viewModel: CreateAccountViewModel,
+    onCreateAccountClick: () -> Unit = {}
+) {
+
+    val state by viewModel.uiState.collectAsState()
+    CreateAccountScreen(state = state, onCreateAccountClick = { /*TODO*/ })
+
+}
+
+@Composable
+fun CreateAccountScreen(
+    state: CreateAccountScreenUiState,
+    onCreateAccountClick: () -> Unit = {}
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxSize()
-            .background(color = Color.LightGray)
+            .verticalScroll(rememberScrollState())
+            .background(color = Color.LightGray) //TODO: Add a Blur Background
     ) {
         OutlinedCard(
             border = BorderStroke(1.dp, Color.LightGray),
@@ -46,19 +68,32 @@ fun CreateAccountScreen() {
                     fontSize = TextUnit(24f, TextUnitType.Sp),
                     modifier = Modifier.padding(vertical = 16.dp)
                 )
-                NicknameText(value = "", onValueChange = {}, modifier = Modifier.fillMaxWidth())
-                EmailText(value = "", onValueChange = {}, modifier = Modifier.fillMaxWidth())
-                PasswordText(value = "", onValueChange = {}, modifier = Modifier.fillMaxWidth())
+                NicknameText(
+                    value = state.nicknameText,
+                    onValueChange = state.onNicknameTextChange,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                EmailText(
+                    value = state.emailText,
+                    onValueChange = state.onEmailTextChange,
+                    modifier = Modifier.fillMaxWidth()
+                )
                 PasswordText(
-                    value = "",
+                    value = state.passwordText,
+                    onValueChange = state.onPasswordTextChange,
+                    keyboardImeAction = ImeAction.Next,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                PasswordText(
+                    value = state.passwordConfirmText,
+                    onValueChange = state.onPasswordConfirmTextChange,
                     labelText = "Confirm Password",
                     placeholderText = "Insert your Password Again",
-                    onValueChange = {},
                     modifier = Modifier.fillMaxWidth()
                 )
 
                 PrimaryButton(
-                    onClick = { /*TODO*/ },
+                    onClick = onCreateAccountClick,
                     text = "Create Account",
                     modifier = Modifier
                         .fillMaxWidth()
@@ -72,5 +107,5 @@ fun CreateAccountScreen() {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 private fun CreateAccountScreenPreview() {
-    CreateAccountScreen()
+    CreateAccountScreen(state = CreateAccountScreenUiState())
 }

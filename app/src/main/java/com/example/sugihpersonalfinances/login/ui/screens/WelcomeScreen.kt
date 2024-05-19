@@ -3,10 +3,14 @@ package com.example.sugihpersonalfinances.login.ui.screens
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeightIn
+import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,24 +30,25 @@ fun WelcomeScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
-            .background(color = Color.LightGray)
+            .background(color = Color.LightGray) //TODO: Add a Blur Background
     ) {
         Spacer(
             modifier = Modifier
-                .fillMaxHeight(0.8f)
+                .fillMaxHeight(0.75f)
         )
         PrimaryButton(
             onClick = state.onLoginClick,
             modifier = Modifier
-                .heightIn(40.dp)
+                .requiredHeightIn(40.dp)
                 .fillMaxWidth(0.8f)
         )
         SecondaryButton(
             onClick = state.onCreateAccountClick,
             text = "Create Account",
             modifier = Modifier
-                .heightIn(40.dp)
+                .requiredHeightIn(40.dp)
                 .fillMaxWidth(0.8f)
+                .padding(top = 4.dp, bottom = 16.dp)
         )
     }
 }

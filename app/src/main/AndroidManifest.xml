@@ -15,7 +15,8 @@
         <activity
             android:name=".login.ui.activities.LoginActivity"
             android:exported="true"
-            android:theme="@style/Theme.SugihPersonalFinances">
+            android:theme="@style/Theme.SugihPersonalFinances"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
