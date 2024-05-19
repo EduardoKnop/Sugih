@@ -13,11 +13,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.sugihpersonalfinances.login.states.WelcomeScreenUiState
 import com.example.sugihpersonalfinances.login.ui.components.PrimaryButton
 import com.example.sugihpersonalfinances.login.ui.components.SecondaryButton
 
 @Composable
-fun WelcomeScreen() {
+fun WelcomeScreen(
+    modifier: Modifier = Modifier,
+    state: WelcomeScreenUiState = WelcomeScreenUiState(onLoginClick = {}, onCreateAccountClick = {})
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -29,13 +33,13 @@ fun WelcomeScreen() {
                 .fillMaxHeight(0.8f)
         )
         PrimaryButton(
-            onClick = { /*TODO*/ },
+            onClick = state.onLoginClick,
             modifier = Modifier
                 .heightIn(40.dp)
                 .fillMaxWidth(0.8f)
         )
         SecondaryButton(
-            onClick = { /*TODO*/ },
+            onClick = state.onCreateAccountClick,
             text = "Create Account",
             modifier = Modifier
                 .heightIn(40.dp)
