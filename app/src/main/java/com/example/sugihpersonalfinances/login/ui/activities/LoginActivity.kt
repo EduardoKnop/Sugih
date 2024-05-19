@@ -6,11 +6,9 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.sugihpersonalfinances.login.destination.Destination
 import com.example.sugihpersonalfinances.login.states.WelcomeScreenUiState
@@ -54,7 +52,8 @@ class LoginActivity : ComponentActivity() {
                         composable(Destination.CreateAccount.route) {
                             CreateAccountScreen(
                                 viewModel = createAccountViewModel,
-                                onCreateAccountClick = { /*TODO*/ }
+                                onSuccessClick = { /*TODO*/ },
+                                onErrorClick = { /*TODO*/ }
                             )
                         }
                     }

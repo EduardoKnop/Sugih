@@ -4,24 +4,41 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Email
+import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PlatformImeOptions
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.sugihpersonalfinances.R
 import com.example.sugihpersonalfinances.ui.theme.robotoFamily
 
 @Composable
 fun EmailText(
     value: String,
     onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    EmailText(
+        value = value,
+        onValueChange = onValueChange,
+        isError = false,
+        errorText = "",
+        modifier = modifier
+    )
+}
+
+@Composable
+fun EmailText(
+    value: String,
+    onValueChange: (String) -> Unit,
+    isError: Boolean,
+    errorText: String,
     modifier: Modifier = Modifier
 ) {
     OutlinedTextField(
@@ -43,9 +60,18 @@ fun EmailText(
         },
         leadingIcon = {
             Icon(
-                painter = painterResource(id = R.drawable.email_icon),
+                imageVector = Icons.Rounded.Email,
                 contentDescription = ""
             )
+        },
+        isError = isError,
+        trailingIcon = {
+            if (isError)
+                Icon(imageVector = Icons.Rounded.Info, contentDescription = "")
+        },
+        supportingText = {
+            if (isError)
+                Text(text = errorText)
         },
         keyboardOptions = KeyboardOptions(
             capitalization = KeyboardCapitalization.None,
@@ -66,4 +92,16 @@ private fun EmailTextPreview() {
 @Composable
 private fun EmailTextWithValuePreview() {
     EmailText(value = "email@email.com", onValueChange = {})
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun EmailTextErrorPreview() {
+    EmailText(value = "", onValueChange = {}, isError = true, errorText = "Error")
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun EmailTextWithValueErrorPreview() {
+    EmailText(value = "email@email.com", onValueChange = {}, isError = true, errorText = "Error")
 }

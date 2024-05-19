@@ -18,3 +18,9 @@ val Sunset = Color(0xFFFFCF99)
 
 val NeutralGoogleBackground = Color(0xFFF2F2F2)
 val NeutralGoogleFont = Color(0xFF1F1F1F)
+
+object TextFieldColors {
+    val Error = Color(0xFFB3261E)
+    val LabelText = Color(0xFF49454F)
+    val InputText = Color(0xFF1D1B20)
+}

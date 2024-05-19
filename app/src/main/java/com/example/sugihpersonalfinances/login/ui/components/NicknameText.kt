@@ -7,6 +7,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -42,7 +43,7 @@ fun NicknameText(
         },
         leadingIcon = {
             Icon(
-                imageVector = Icons.Default.Person,
+                imageVector = Icons.Rounded.Person,
                 contentDescription = ""
             )
         },

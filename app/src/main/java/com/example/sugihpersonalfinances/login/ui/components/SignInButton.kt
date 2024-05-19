@@ -14,8 +14,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,7 +30,7 @@ import com.example.sugihpersonalfinances.ui.theme.robotoFamily
 @Composable
 fun SignInButton(
     text: String,
-    icon: Painter,
+    icon: ImageVector,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -49,7 +49,7 @@ fun SignInButton(
             .widthIn(183.dp)
     ) {
         Icon(
-            painter = icon,
+            imageVector = icon,
             contentDescription = "",
             tint = Color.Unspecified,
             modifier = Modifier.padding(end = 10.dp)
@@ -69,7 +69,7 @@ fun SignInButton(
 private fun SignInButtonGooglePreview() {
     SignInButton(
         text = "Sign in with Google",
-        icon = painterResource(id = R.drawable.google_icon),
+        icon = ImageVector.vectorResource(id = R.drawable.google_icon),
         onClick = {},
         modifier = Modifier
             .height(40.dp)

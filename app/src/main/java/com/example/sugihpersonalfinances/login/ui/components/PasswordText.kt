@@ -4,6 +4,9 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Info
+import androidx.compose.material.icons.rounded.Lock
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -25,6 +28,29 @@ fun PasswordText(
     placeholderText: String = "Insert your Password",
     keyboardImeAction: ImeAction = ImeAction.Done
 ) {
+    PasswordText(
+        value = value,
+        onValueChange = onValueChange,
+        isError = false,
+        errorText = "",
+        modifier = modifier,
+        labelText = labelText,
+        placeholderText = placeholderText,
+        keyboardImeAction = keyboardImeAction
+    )
+}
+
+@Composable
+fun PasswordText(
+    value: String,
+    onValueChange: (String) -> Unit,
+    isError: Boolean,
+    errorText: String,
+    modifier: Modifier = Modifier,
+    labelText: String = "Password",
+    placeholderText: String = "Insert your Password",
+    keyboardImeAction: ImeAction = ImeAction.Done,
+) {
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
@@ -44,9 +70,18 @@ fun PasswordText(
         },
         leadingIcon = {
             Icon(
-                painter = painterResource(id = R.drawable.password_icon),
+                imageVector = Icons.Rounded.Lock,
                 contentDescription = ""
             )
+        },
+        isError = isError,
+        trailingIcon = {
+            if (isError)
+                Icon(imageVector = Icons.Rounded.Info, contentDescription = "")
+        },
+        supportingText = {
+            if (isError)
+                Text(text = errorText)
         },
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Password,
@@ -66,4 +101,16 @@ private fun PasswordTextPreview() {
 @Composable
 private fun PasswordTextWithValuePreview() {
     PasswordText("Password123", onValueChange = {})
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun PasswordTextErrorPreview() {
+    PasswordText(value = "", onValueChange = {}, isError = true, errorText = "Error")
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun PasswordTextWithValueErrorPreview() {
+    PasswordText("Password123", onValueChange = {}, isError = true, errorText = "Error")
 }

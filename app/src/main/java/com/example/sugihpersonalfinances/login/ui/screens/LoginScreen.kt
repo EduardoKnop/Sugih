@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -18,7 +20,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
@@ -56,7 +59,7 @@ fun LoginScreen() {
                 )
                 SignInButton(
                     text = "Continue with Google",
-                    icon = painterResource(id = R.drawable.google_icon),
+                    icon = ImageVector.vectorResource(id = R.drawable.google_icon),
                     onClick = { /*TODO*/ },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -64,14 +67,14 @@ fun LoginScreen() {
                 )
                 SignInButton(
                     text = "Continue with Facebook",
-                    icon = painterResource(id = R.drawable.facebook_icon),
+                    icon = ImageVector.vectorResource(id = R.drawable.facebook_icon),
                     onClick = { /*TODO*/ },
                     modifier = Modifier
                         .fillMaxWidth()
                 )
                 SignInButton(
                     text = "Continue as Guest",
-                    icon = painterResource(id = R.drawable.account_icon),
+                    icon = Icons.Rounded.AccountCircle,
                     onClick = { /*TODO*/ },
                     modifier = Modifier
                         .fillMaxWidth()

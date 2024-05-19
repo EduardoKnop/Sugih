@@ -34,18 +34,20 @@ import com.example.sugihpersonalfinances.login.viewmodels.CreateAccountViewModel
 @Composable
 fun CreateAccountScreen(
     viewModel: CreateAccountViewModel,
-    onCreateAccountClick: () -> Unit = {}
+    onSuccessClick: () -> Unit = {},
+    onErrorClick: () -> Unit = {}
 ) {
 
     val state by viewModel.uiState.collectAsState()
-    CreateAccountScreen(state = state, onCreateAccountClick = { /*TODO*/ })
+    CreateAccountScreen(state = state, onSuccessClick = { /*TODO*/ }, onErrorClick = { /*TODO*/ })
 
 }
 
 @Composable
 fun CreateAccountScreen(
     state: CreateAccountScreenUiState,
-    onCreateAccountClick: () -> Unit = {}
+    onSuccessClick: () -> Unit = {},
+    onErrorClick: () -> Unit = {}
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -76,25 +78,42 @@ fun CreateAccountScreen(
                 EmailText(
                     value = state.emailText,
                     onValueChange = state.onEmailTextChange,
+                    isError = !state.isEmailValid() && !state.isEmailEmpty(),
+                    errorText = "Enter the email address in the format: someone@example.com",
                     modifier = Modifier.fillMaxWidth()
                 )
                 PasswordText(
                     value = state.passwordText,
                     onValueChange = state.onPasswordTextChange,
+                    isError = !state.isPasswordValid() && !state.isPasswordEmpty(),
+                    errorText = """Your password must contain:
+                            |6 or More Digits
+                            |An Uppercase Letter
+                            |A Lowercase Letter
+                            |A Number
+                        """.trimMargin(),
                     keyboardImeAction = ImeAction.Next,
                     modifier = Modifier.fillMaxWidth()
                 )
                 PasswordText(
                     value = state.passwordConfirmText,
                     onValueChange = state.onPasswordConfirmTextChange,
+                    isError = !state.isPasswordAndPasswordConfirmEquals()
+                            && !state.isPasswordConfirmEmpty(),
+                    errorText = "Password and Confirm Password must be Equals",
                     labelText = "Confirm Password",
                     placeholderText = "Insert your Password Again",
                     modifier = Modifier.fillMaxWidth()
                 )
 
                 PrimaryButton(
-                    onClick = onCreateAccountClick,
+                    onClick = onSuccessClick,
                     text = "Create Account",
+                    enabled = !state.isAnyTextEmpty()
+                            && state.isEmailValid()
+                            && state.isPasswordValid()
+                            && state.isPasswordAndPasswordConfirmEquals(),
+                    onClickWhenDisable = onErrorClick,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 16.dp)
