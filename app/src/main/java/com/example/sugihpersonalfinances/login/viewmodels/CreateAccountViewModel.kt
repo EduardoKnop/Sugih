@@ -1,6 +1,7 @@
 package com.example.sugihpersonalfinances.login.viewmodels
 
 import androidx.lifecycle.ViewModel
+import com.example.sugihpersonalfinances.login.authentication.UserAuthenticator
 import com.example.sugihpersonalfinances.login.states.CreateAccountScreenUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -34,9 +35,14 @@ class CreateAccountViewModel : ViewModel() {
                     _uiState.value = _uiState.value.copy(
                         passwordConfirmText = it
                     )
-                },
-
+                }
             )
+        }
+    }
+
+    fun createAccountWithEmail() {
+        _uiState.value.run {
+            UserAuthenticator.createAccountWithEmail(emailText, passwordText)
         }
     }
 

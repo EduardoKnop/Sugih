@@ -40,6 +40,7 @@ import com.example.sugihpersonalfinances.login.viewmodels.LoginViewModel
 @Composable
 fun LoginScreen(
     viewModel: LoginViewModel,
+    modifier: Modifier = Modifier,
     onContinueWithGoogleClick: () -> Unit = {},
     onContinueWithFacebookClick: () -> Unit = {},
     onContinueAsGuestClick: () -> Unit = {},
@@ -51,6 +52,7 @@ fun LoginScreen(
     val state by viewModel.uiState.collectAsState()
     LoginScreen(
         state = state,
+        modifier = modifier,
         onContinueWithGoogleClick = { /*TODO*/ },
         onContinueWithFacebookClick = { /*TODO*/ },
         onContinueAsGuestClick = { /*TODO*/ },
@@ -64,6 +66,7 @@ fun LoginScreen(
 @Composable
 fun LoginScreen(
     state: LoginScreenUiState,
+    modifier: Modifier = Modifier,
     onContinueWithGoogleClick: () -> Unit = {},
     onContinueWithFacebookClick: () -> Unit = {},
     onContinueAsGuestClick: () -> Unit = {},
@@ -73,7 +76,7 @@ fun LoginScreen(
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
             .background(color = Color.LightGray) //TODO: Add a Blur Background

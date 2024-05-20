@@ -24,25 +24,37 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
+import com.example.sugihpersonalfinances.login.exceptions.InvalidEmailException
+import com.example.sugihpersonalfinances.login.exceptions.InvalidPasswordException
 import com.example.sugihpersonalfinances.login.states.CreateAccountScreenUiState
 import com.example.sugihpersonalfinances.login.ui.components.EmailText
 import com.example.sugihpersonalfinances.login.ui.components.NicknameText
 import com.example.sugihpersonalfinances.login.ui.components.PasswordText
 import com.example.sugihpersonalfinances.login.ui.components.PrimaryButton
 import com.example.sugihpersonalfinances.login.viewmodels.CreateAccountViewModel
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 
 @Composable
 fun CreateAccountScreen(
     viewModel: CreateAccountViewModel,
-    onSuccessClick: () -> Unit = {},
-    onErrorClick: () -> Unit = {}
+    modifier: Modifier = Modifier,
+    onCreateSuccess: () -> Unit = {},
+    onCreateFailure: (Exception) -> Unit = {},
 ) {
 
     val state by viewModel.uiState.collectAsState()
     CreateAccountScreen(
         state = state,
-        onSuccessClick = { /*TODO*/ },
-        onErrorClick = { /*TODO */ }
+        modifier = modifier,
+        onCreateSuccess = {
+            viewModel.createAccountWithEmail()
+            onCreateSuccess()
+        },
+        onCreateFailure = {
+            onCreateFailure(it)
+        }
     )
 
 }
@@ -50,12 +62,13 @@ fun CreateAccountScreen(
 @Composable
 fun CreateAccountScreen(
     state: CreateAccountScreenUiState,
-    onSuccessClick: () -> Unit = {},
-    onErrorClick: () -> Unit = {}
+    modifier: Modifier = Modifier,
+    onCreateSuccess: () -> Unit = {},
+    onCreateFailure: (Exception) -> Unit = {}
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
             .background(color = Color.LightGray) //TODO: Add a Blur Background
@@ -111,13 +124,13 @@ fun CreateAccountScreen(
                 )
 
                 PrimaryButton(
-                    onClick = onSuccessClick,
+                    onClick = onCreateSuccess,
                     text = "Create Account",
                     enabled = !state.isAnyTextEmpty()
                             && state.isEmailValid()
                             && state.isPasswordValid()
                             && state.isPasswordAndPasswordConfirmEquals(),
-                    onClickWhenDisable = onErrorClick,
+                    onClickWhenDisable = { onCreateFailure(state.createAccountError()) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 16.dp)

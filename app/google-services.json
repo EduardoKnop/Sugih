@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "864355254810",
+    "project_id": "sugihpersonalfinances",
+    "storage_bucket": "sugihpersonalfinances.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:864355254810:android:4b23e319931ebed03a07a3",
+        "android_client_info": {
+          "package_name": "com.example.sugihpersonalfinances"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "864355254810-o2hgfu8siubic0hbpfoseq1jdgpirrjp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.sugihpersonalfinances",
+            "certificate_hash": "b8f06c90ec27bdb179c4d321c6943cbe34c53962"
+          }
+        },
+        {
+          "client_id": "864355254810-qh1itcr0jjtohlgttti5mllsa6bpn4f6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzUKz5ucgXarmYUZ-1cyzHg4L9tSNgV00"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "864355254810-qh1itcr0jjtohlgttti5mllsa6bpn4f6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
