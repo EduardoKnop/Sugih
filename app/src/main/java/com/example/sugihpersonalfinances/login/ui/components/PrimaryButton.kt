@@ -23,27 +23,12 @@ import com.example.sugihpersonalfinances.ui.theme.robotoFamily
 fun PrimaryButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    text: String = "Log In",
-) {
-    PrimaryButton(
-        onClick = onClick,
-        enabled = true,
-        onClickWhenDisable = onClick,
-        modifier = modifier,
-        text = text
-    )
-}
-
-@Composable
-fun PrimaryButton(
-    onClick: () -> Unit,
-    enabled: Boolean,
-    onClickWhenDisable: () -> Unit,
-    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     text: String = "Log In",
 ) {
     FilledTonalButton(
-        onClick = if (enabled) onClick else onClickWhenDisable,
+        onClick = onClick,
+        enabled = enabled,
         shape = RoundedCornerShape(100),
         colors = ButtonColors(
             IndigoDye, Color.White, IndigoDye, Color.White

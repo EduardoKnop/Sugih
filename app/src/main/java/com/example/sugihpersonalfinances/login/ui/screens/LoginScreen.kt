@@ -45,7 +45,6 @@ fun LoginScreen(
     onContinueWithFacebookClick: () -> Unit = {},
     onContinueAsGuestClick: () -> Unit = {},
     onValidLoginClick: () -> Unit = {},
-    onInvalidLoginClick: () -> Unit = {},
     onForgotPasswordClick: () -> Unit = {}
 ) {
 
@@ -57,7 +56,6 @@ fun LoginScreen(
         onContinueWithFacebookClick = { /*TODO*/ },
         onContinueAsGuestClick = { /*TODO*/ },
         onValidLoginClick = { /*TODO*/ },
-        onInvalidLoginClick = { /*TODO*/ },
         onForgotPasswordClick = { /*TODO*/ }
     )
 
@@ -71,7 +69,6 @@ fun LoginScreen(
     onContinueWithFacebookClick: () -> Unit = {},
     onContinueAsGuestClick: () -> Unit = {},
     onValidLoginClick: () -> Unit = {},
-    onInvalidLoginClick: () -> Unit = {},
     onForgotPasswordClick: () -> Unit = {}
 ) {
     Row(
@@ -140,7 +137,6 @@ fun LoginScreen(
                     enabled = state.isAnyTextEmpty()
                             && !state.isEmailValid()
                             && !state.isPasswordValid(),
-                    onClickWhenDisable = onInvalidLoginClick,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 16.dp)

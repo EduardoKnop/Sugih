@@ -1,12 +1,5 @@
 package com.example.sugihpersonalfinances.login.states
 
-import com.example.sugihpersonalfinances.login.exceptions.EmptyEmailException
-import com.example.sugihpersonalfinances.login.exceptions.EmptyNicknameException
-import com.example.sugihpersonalfinances.login.exceptions.EmptyPasswordException
-import com.example.sugihpersonalfinances.login.exceptions.InvalidEmailException
-import com.example.sugihpersonalfinances.login.exceptions.InvalidPasswordException
-import com.example.sugihpersonalfinances.login.exceptions.PasswordConfirmationNotEqualsException
-
 data class CreateAccountScreenUiState(
     val nicknameText: String = "",
     val onNicknameTextChange: (String) -> Unit = {},
@@ -14,14 +7,19 @@ data class CreateAccountScreenUiState(
     val onEmailTextChange: (String) -> Unit = {},
     val passwordText: String = "",
     val onPasswordTextChange: (String) -> Unit = {},
+    val onPasswordClickChange: (Boolean) -> Unit = {},
     val passwordConfirmText: String = "",
-    val onPasswordConfirmTextChange: (String) -> Unit = {}
+    val onPasswordConfirmTextChange: (String) -> Unit = {},
+    val onPasswordConfirmClickChange: (Boolean) -> Unit = {}
 ) {
 
-    fun isAnyTextEmpty(): Boolean = isNicknameEmpty() || isEmailEmpty()
+    fun isAccountInfoValid(): Boolean = !isAnyTextEmpty() && isEmailValid()
+            && isPasswordValid() && isPasswordAndPasswordConfirmEquals()
+
+    private fun isAnyTextEmpty(): Boolean = isNicknameEmpty() || isEmailEmpty()
             || isPasswordEmpty() || isPasswordConfirmEmpty()
 
-    private fun isNicknameEmpty(): Boolean = nicknameText.isBlank()
+    fun isNicknameEmpty(): Boolean = nicknameText.isBlank()
 
     fun isEmailEmpty(): Boolean = emailText.isBlank()
 
@@ -39,32 +37,5 @@ data class CreateAccountScreenUiState(
                 && !passwordText.contains(Regex("\\W"))
 
     fun isPasswordAndPasswordConfirmEquals(): Boolean = passwordText == passwordConfirmText
-
-    fun createAccountError(): Exception {
-        if (isNicknameEmpty()) {
-            return EmptyNicknameException()
-        } else if (isEmailEmpty()) {
-            return EmptyEmailException()
-        } else if (isPasswordEmpty() || isPasswordConfirmEmpty()) {
-            return EmptyPasswordException(
-                "Password or Confirm Password Empty: " +
-                        "Password = $passwordText, " +
-                        "ConfirmPassword = $passwordConfirmText"
-            )
-        } else if (!isEmailValid()) {
-            return InvalidEmailException("Invalid Email: $emailText")
-        } else if (!isPasswordAndPasswordConfirmEquals()) {
-            return PasswordConfirmationNotEqualsException(
-                "Password and Confirm Password Not Equals: " +
-                        "Password = $passwordText, " +
-                        "ConfirmPassword = $passwordConfirmText"
-            )
-        } else if (!isPasswordValid()) {
-            return InvalidPasswordException("Invalid Password: $passwordText")
-        }
-
-        return Exception("WTF! Nickname: $nicknameText, Email: $emailText, " +
-                "Password: $passwordText, Confirm Password: $passwordConfirmText")
-    }
 
 }

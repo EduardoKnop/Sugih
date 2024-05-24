@@ -11,7 +11,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
@@ -41,6 +46,8 @@ fun EmailText(
     errorText: String,
     modifier: Modifier = Modifier
 ) {
+    var isFocused by remember { mutableStateOf(false) }
+
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
@@ -64,13 +71,9 @@ fun EmailText(
                 contentDescription = ""
             )
         },
-        isError = isError,
-        trailingIcon = {
-            if (isError)
-                Icon(imageVector = Icons.Rounded.Info, contentDescription = "")
-        },
+        isError = if (!isFocused) isError else false,
         supportingText = {
-            if (isError)
+            if (isError && !isFocused)
                 Text(text = errorText)
         },
         keyboardOptions = KeyboardOptions(
@@ -78,7 +81,9 @@ fun EmailText(
             keyboardType = KeyboardType.Email,
             imeAction = ImeAction.Next
         ),
-        modifier = modifier.horizontalScroll(rememberScrollState())
+        modifier = modifier
+            .horizontalScroll(rememberScrollState())
+            .onFocusChanged { isFocused = it.isFocused }
     )
 }
 

@@ -23,6 +23,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.sugihpersonalfinances.login.authentication.UserAuthenticator
 import com.example.sugihpersonalfinances.login.destination.Destination
+import com.example.sugihpersonalfinances.login.enums.CreateAccountStatus
 import com.example.sugihpersonalfinances.login.exceptions.EmptyEmailException
 import com.example.sugihpersonalfinances.login.exceptions.EmptyNicknameException
 import com.example.sugihpersonalfinances.login.exceptions.EmptyPasswordException
@@ -43,11 +44,8 @@ import kotlinx.coroutines.launch
 
 class LoginActivity : ComponentActivity() {
 
-    private lateinit var auth: FirebaseAuth
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        auth = UserAuthenticator.auth
 
         setContent {
             val navController = rememberNavController()
@@ -83,57 +81,23 @@ class LoginActivity : ComponentActivity() {
                     composable(Destination.CreateAccount.route) {
                         CreateAccountScreen(
                             viewModel = createAccountViewModel,
-                            onCreateSuccess = {
+                            onCreateAccountClick = {
                                 scope.launch {
-                                    val result = snackbarHostState.showSnackbar(
-                                        message = "Success", actionLabel = "Ok"
-                                    )
+                                    val message = when (createAccountViewModel.status) {
+                                        CreateAccountStatus.SUCCESS ->
+                                            "Success"
 
-                                    when (result) {
-                                        SnackbarResult.ActionPerformed -> {
+                                        CreateAccountStatus.INTERNAL_ERROR ->
+                                            "Invalid Data! Please Check and Submit Again"
 
-                                        }
+                                        CreateAccountStatus.FIREBASE_ERROR ->
+                                            "Connection Error! Try Again Later"
 
-                                        SnackbarResult.Dismissed -> {
-
-                                        }
+                                        else -> ""
                                     }
-                                }
-                            },
-                            onCreateFailure = { exception ->
-                                scope.launch {
-                                    val message = when (exception) {
-                                        is EmptyNicknameException ->
-                                            "Please add your Nickname to Create Account"
 
-                                        is EmptyEmailException ->
-                                            "Please add your Email to Create Account"
-
-                                        is EmptyPasswordException ->
-                                            "Please add your Password to Create Account"
-
-                                        is PasswordConfirmationNotEqualsException ->
-                                            "Confirm Password and Password does not Match"
-
-                                        is InvalidEmailException ->
-                                            "Invalid Email"
-
-                                        is InvalidPasswordException ->
-                                            "Invalid Password"
-
-                                        is FirebaseAuthUserCollisionException -> {
-                                            "Email already Exists"
-                                        }
-
-                                        else -> {
-                                            Log.d("LoginActivity", "" + exception.message)
-                                            "An Error Occurred"
-                                        }
-                                    }
                                     val result = snackbarHostState.showSnackbar(
-                                        message = message,
-                                        actionLabel = "Ok",
-                                        duration = SnackbarDuration.Short
+                                        message = message, actionLabel = "Ok"
                                     )
 
                                     when (result) {
@@ -150,7 +114,6 @@ class LoginActivity : ComponentActivity() {
                         )
                     }
                 }
-
             }
         }
     }

@@ -1,19 +1,22 @@
 package com.example.sugihpersonalfinances.login.authentication
 
 import android.util.Log
+import com.google.android.gms.tasks.Task
 import com.google.firebase.Firebase
+import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.auth.FirebaseAuthUserCollisionException
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException
+import com.google.firebase.auth.FirebaseAuthException
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
 
 object UserAuthenticator {
 
-    val auth: FirebaseAuth = Firebase.auth
+    private val auth: FirebaseAuth = Firebase.auth
 
-    fun createAccountWithEmail(email: String, password: String) {
-        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+    fun createAccountWithEmail(email: String, password: String): Task<AuthResult> {
+        val pendingTask = auth.createUserWithEmailAndPassword(email, password)
+
+        pendingTask.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val user = auth.currentUser
                 Log.d(
@@ -46,12 +49,13 @@ object UserAuthenticator {
                     }
 
                     is FirebaseAuthUserCollisionException -> { // User should not know this
-                        // TODO: Send to Crashlytics? User should not know this issue
+                        // TODO: Send to Crashlytics or Another Service? User should not know this issue
                     }
                 }*/
             }
-
         }
+
+        return pendingTask
     }
 
 }
