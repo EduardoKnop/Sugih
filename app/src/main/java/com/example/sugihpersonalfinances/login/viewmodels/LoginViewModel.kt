@@ -9,6 +9,7 @@ import com.example.sugihpersonalfinances.login.exceptions.EmptyPasswordException
 import com.example.sugihpersonalfinances.login.exceptions.InvalidEmailException
 import com.example.sugihpersonalfinances.login.exceptions.InvalidPasswordException
 import com.example.sugihpersonalfinances.login.states.LoginScreenUiState
+import com.facebook.AccessToken
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.userProfileChangeRequest
@@ -77,6 +78,20 @@ class LoginViewModel : ViewModel() {
             status = CreateAccountStatus.STARTED
 
             val pendingTask = UserAuthenticator.logInAnonymously()
+                .addOnCompleteListener { result ->
+                    status = if (result.isSuccessful) CreateAccountStatus.SUCCESS
+                    else CreateAccountStatus.FIREBASE_ERROR
+                }
+
+            return pendingTask
+        }
+    }
+
+    fun logInWithFacebook(token: AccessToken): Task<AuthResult> {
+        _uiState.value.run {
+            status = CreateAccountStatus.STARTED
+
+            val pendingTask = UserAuthenticator.logInWithFacebook(token)
                 .addOnCompleteListener { result ->
                     status = if (result.isSuccessful) CreateAccountStatus.SUCCESS
                     else CreateAccountStatus.FIREBASE_ERROR

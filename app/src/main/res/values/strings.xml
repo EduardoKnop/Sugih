@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Sugih Personal Finances</string>
+    <string name="facebook_app_id">282924978143416</string>
+    <string name="fb_login_protocol_scheme">fb282924978143416</string>
+    <string name="facebook_client_token">e9c145705faf37176faee68659bcd5f1</string>
 </resources>

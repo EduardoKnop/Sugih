@@ -48,15 +48,13 @@ fun LoginScreen(
     onLoginClick: () -> Unit = {},
     onForgotPasswordClick: () -> Unit = {}
 ) {
-
     val state by viewModel.uiState.collectAsState()
+
     LoginScreen(
         state = state,
         modifier = modifier,
-        onContinueWithGoogleClick = {
-            onContinueWithGoogleClick()
-        },
-        onContinueWithFacebookClick = { /*TODO*/ },
+        onContinueWithGoogleClick = { onContinueWithGoogleClick() },
+        onContinueWithFacebookClick = { onContinueWithFacebookClick() },
         onContinueAsGuestClick = {
             viewModel.logInAnonymously().addOnCompleteListener {
                 onContinueAsGuestClick()

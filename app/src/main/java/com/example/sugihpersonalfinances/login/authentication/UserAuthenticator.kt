@@ -12,6 +12,7 @@ import androidx.credentials.GetCredentialResponse
 import androidx.credentials.PasswordCredential
 import androidx.credentials.PublicKeyCredential
 import com.example.sugihpersonalfinances.login.constants.LogInConstants
+import com.facebook.AccessToken
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.tasks.Task
@@ -21,6 +22,7 @@ import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
 import com.google.firebase.Firebase
 import com.google.firebase.auth.AuthResult
+import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseUser
@@ -95,7 +97,7 @@ object UserAuthenticator {
                     val user = auth.currentUser
                     Log.d(TAG, "signInAnonymously:success (user: $user)")
                 } else {
-                    Log.d(TAG, "signInAnonymously: error (exception: ${result.exception}")
+                    Log.d(TAG, "signInAnonymously:error (exception: ${result.exception}")
                 }
             }
 
@@ -175,6 +177,22 @@ object UserAuthenticator {
 
     fun logOut() {
         auth.signOut()
+    }
+
+    fun logInWithFacebook(token: AccessToken): Task<AuthResult> {
+        val credential = FacebookAuthProvider.getCredential(token.token)
+
+        val pendingTask = auth.signInWithCredential(credential)
+            .addOnCompleteListener { result ->
+                if (result.isSuccessful) {
+                    val user = auth.currentUser
+                    Log.d(TAG, "logInWithFacebook:success (user: $user)")
+                } else {
+                    Log.d(TAG, "logInWithFacebook:error (exception: ${result.exception}")
+                }
+            }
+
+        return pendingTask
     }
 
 }

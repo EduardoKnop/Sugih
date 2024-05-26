@@ -1,9 +1,12 @@
 package com.example.sugihpersonalfinances.login.ui.activities
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
+import androidx.activity.result.ActivityResultRegistryOwner
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -19,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -34,28 +38,52 @@ import com.example.sugihpersonalfinances.login.viewmodels.CreateAccountViewModel
 import com.example.sugihpersonalfinances.login.viewmodels.LoginViewModel
 import com.example.sugihpersonalfinances.ui.theme.IndigoDye
 import com.example.sugihpersonalfinances.ui.theme.SugihPersonalFinancesTheme
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.login.LoginManager
+import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.identity.Identity
 import kotlinx.coroutines.launch
+import java.util.Arrays
 
 class LoginActivity : ComponentActivity() {
 
+    private val callbackManager = CallbackManager.Factory.create()
+    private val loginManager = LoginManager.getInstance()
+
     private val googleAuthUiClient by lazy {
-        GoogleAuthUiClient(
-            oneTapClient = Identity.getSignInClient(applicationContext)
-        )
+        GoogleAuthUiClient(oneTapClient = Identity.getSignInClient(applicationContext))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val loginViewModel: LoginViewModel by viewModels()
+        val createAccountViewModel: CreateAccountViewModel by viewModels()
+
+        loginManager.registerCallback(
+            callbackManager,
+            object : FacebookCallback<LoginResult> {
+                override fun onSuccess(result: LoginResult) {
+                    loginViewModel.logInWithFacebook(result.accessToken)
+                }
+
+                override fun onCancel() {
+
+                }
+
+                override fun onError(error: FacebookException) {
+
+                }
+            }
+        )
 
         setContent {
             val navController = rememberNavController()
             val scope = rememberCoroutineScope()
 
             val snackbarHostState = remember { SnackbarHostState() }
-
-            val loginViewModel: LoginViewModel by viewModels()
-            val createAccountViewModel: CreateAccountViewModel by viewModels()
 
             val launcher = rememberLauncherForActivityResult(
                 contract = ActivityResultContracts.StartIntentSenderForResult(),
@@ -72,6 +100,8 @@ class LoginActivity : ComponentActivity() {
             )
 
             Screen(snackbarHostState = snackbarHostState) {
+                val context = LocalContext.current
+
                 NavHost(
                     navController = navController,
                     startDestination = Destination.Welcome.route
@@ -130,6 +160,13 @@ class LoginActivity : ComponentActivity() {
                                         ).build()
                                     )
                                 }
+                            },
+                            onContinueWithFacebookClick = {
+                                loginManager.logIn(
+                                    context as ActivityResultRegistryOwner,
+                                    callbackManager,
+                                    listOf("email", "public_profile")
+                                )
                             }
                         )
                     }
@@ -172,6 +209,7 @@ class LoginActivity : ComponentActivity() {
             }
         }
     }
+
 }
 
 @Composable
@@ -191,7 +229,6 @@ fun Screen(
                     content()
                 }
             }
-
         }
     }
 }
