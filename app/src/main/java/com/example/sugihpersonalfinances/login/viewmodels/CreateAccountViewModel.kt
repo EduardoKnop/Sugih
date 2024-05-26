@@ -12,6 +12,7 @@ import com.example.sugihpersonalfinances.login.exceptions.PasswordConfirmationNo
 import com.example.sugihpersonalfinances.login.states.CreateAccountScreenUiState
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
+import com.google.firebase.auth.userProfileChangeRequest
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -79,10 +80,18 @@ class CreateAccountViewModel : ViewModel() {
                     throw InvalidPasswordException("Invalid Password: $passwordText")
             }
 
+            val profileUpdates = userProfileChangeRequest {
+                displayName = nicknameText
+            }
+
             val pendingTask = UserAuthenticator.createAccountWithEmail(emailText, passwordText)
                 .addOnCompleteListener { result ->
-                    status = if (result.isSuccessful) CreateAccountStatus.SUCCESS
-                    else CreateAccountStatus.FIREBASE_ERROR
+                    status = if (result.isSuccessful) {
+                        result.result.user!!.updateProfile(profileUpdates)
+                        CreateAccountStatus.SUCCESS
+                    } else {
+                        CreateAccountStatus.FIREBASE_ERROR
+                    }
                 }
 
             return pendingTask

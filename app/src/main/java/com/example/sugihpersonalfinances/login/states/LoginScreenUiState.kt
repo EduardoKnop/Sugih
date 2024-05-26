@@ -7,7 +7,9 @@ data class LoginScreenUiState(
     val onPasswordTextChange: (String) -> Unit = {}
 ) {
 
-    fun isAnyTextEmpty(): Boolean = isEmailEmpty() || isPasswordEmpty()
+    fun isAccountInfoValid(): Boolean = !isAnyTextEmpty() && isEmailValid() && isPasswordValid()
+
+    private fun isAnyTextEmpty(): Boolean = isEmailEmpty() || isPasswordEmpty()
 
     fun isEmailEmpty(): Boolean = emailText.isEmpty()
 

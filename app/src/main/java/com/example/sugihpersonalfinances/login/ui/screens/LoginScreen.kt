@@ -1,5 +1,6 @@
 package com.example.sugihpersonalfinances.login.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -44,7 +45,7 @@ fun LoginScreen(
     onContinueWithGoogleClick: () -> Unit = {},
     onContinueWithFacebookClick: () -> Unit = {},
     onContinueAsGuestClick: () -> Unit = {},
-    onValidLoginClick: () -> Unit = {},
+    onLoginClick: () -> Unit = {},
     onForgotPasswordClick: () -> Unit = {}
 ) {
 
@@ -52,10 +53,25 @@ fun LoginScreen(
     LoginScreen(
         state = state,
         modifier = modifier,
-        onContinueWithGoogleClick = { /*TODO*/ },
+        onContinueWithGoogleClick = {
+            onContinueWithGoogleClick()
+        },
         onContinueWithFacebookClick = { /*TODO*/ },
-        onContinueAsGuestClick = { /*TODO*/ },
-        onValidLoginClick = { /*TODO*/ },
+        onContinueAsGuestClick = {
+            viewModel.logInAnonymously().addOnCompleteListener {
+                onContinueAsGuestClick()
+            }
+        },
+        onLoginClick = {
+            try {
+                viewModel.logInWithEmail().addOnCompleteListener {
+                    onLoginClick()
+                }
+            } catch (e: IllegalArgumentException) {
+                Log.i("CreateAccountScreen", "Invalid Data: ${e.message}")
+                onLoginClick()
+            }
+        },
         onForgotPasswordClick = { /*TODO*/ }
     )
 
@@ -68,7 +84,7 @@ fun LoginScreen(
     onContinueWithGoogleClick: () -> Unit = {},
     onContinueWithFacebookClick: () -> Unit = {},
     onContinueAsGuestClick: () -> Unit = {},
-    onValidLoginClick: () -> Unit = {},
+    onLoginClick: () -> Unit = {},
     onForgotPasswordClick: () -> Unit = {}
 ) {
     Row(
@@ -133,10 +149,7 @@ fun LoginScreen(
                     modifier = Modifier.fillMaxWidth()
                 )
                 PrimaryButton(
-                    onClick = onValidLoginClick,
-                    enabled = state.isAnyTextEmpty()
-                            && !state.isEmailValid()
-                            && !state.isPasswordValid(),
+                    onClick = onLoginClick,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 16.dp)

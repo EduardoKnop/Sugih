@@ -124,7 +124,6 @@ fun CreateAccountScreen(
                 PrimaryButton(
                     onClick = onCreateAccountClick,
                     text = "Create Account",
-                    enabled = true,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 16.dp)
